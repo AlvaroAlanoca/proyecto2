@@ -5,6 +5,17 @@
     <h1>Tienda Pokemon</h1>
   </div>
   <p>Explora nuestros productos destacados</p>
+    <!-- Form de busqueda -->
+  <form (submit)="$event.preventDefault()" class="search-form">
+    <input
+      type="text"
+      placeholder="Buscar producto..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+      name="search"
+      autocomplete="off"
+    />
+  </form>
    <p class="cart-count">🛒 Productos en el carrito: <strong>{{ getCartCount() }}</strong></p>
 </header>
 
@@ -12,7 +23,7 @@
 
 
   <app-product-card-component
-    *ngFor="let product of products"
+    *ngFor="let product of filteredProducts"
     [name]="product.name"
     [title]="product.title"
     [image]="product.image"
