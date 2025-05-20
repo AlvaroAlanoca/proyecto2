@@ -10,31 +10,5 @@ import { ProductService,Product } from './services/product.service';
 
 })
 export class AppComponent {
-   products: Product[] = [];
-   filteredProducts: Product[] = [];
-   cart: string[] = [];
-  searchTerm: string = '';
-
-  constructor(private productService: ProductService) {}
-
-  ngOnInit():void {
-    this.products = this.productService.getProducts(); 
-    this.filteredProducts = this.products;
-  }
-
-  handleAddToCart(productName: string) {
-    this.cart.push(productName);
-    alert(`"${productName}" fue agregado al carrito`);
-  }
- getCartCount(): number {
-    return this.cart.length;
-  }
-  onSearchChange() {
-    const term = this.searchTerm.toLowerCase();
-    this.filteredProducts = this.products.filter(product =>
-      product.title.toLowerCase().includes(term) ||
-      product.name.toLowerCase().includes(term)
-    );
-  }
 
 }

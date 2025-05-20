@@ -5,15 +5,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductCardComponentComponent } from './product-card-component/product-card-component.component';
 import { FormsModule } from '@angular/forms';
+import { ProductListComponent } from './views/product-list/product-list.component';
+import { ProductDetailComponent } from './views/product-detail/product-detail.component';
+import { RouterModule } from '@angular/router';
+
 @NgModule({
   declarations: [
     AppComponent,
-    ProductCardComponentComponent
+    ProductCardComponentComponent,
+    ProductListComponent,
+    ProductDetailComponent,
+
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
