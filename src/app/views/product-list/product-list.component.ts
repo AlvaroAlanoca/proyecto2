@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product, ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -9,32 +10,39 @@ import { Product, ProductService } from '../../services/product.service';
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent {
- products: Product[] = [];
+  products: Product[] = [];
   filteredProducts: Product[] = [];
-  cart: string[] = [];
-  searchTerm: string = '';
+  searchTerm:string = '';
+    errorMessage: string = '';
 
-  constructor(private productService: ProductService, private router:Router) {}
+  constructor(
+    private productService: ProductService, 
+    private router: Router, 
+    private cartService:CartService) {}
 
-  ngOnInit(): void {
-    this.products = this.productService.getProducts();
-    this.filteredProducts = [...this.products];
+ngOnInit(): void {
+  this.productService.getProducts().subscribe((products: Product[]) => {
+    this.products = products;
+    this.filteredProducts = products;
+  });
+  
+}
+  
+  handleAddToCart(productName: string): void {
+    this.cartService.addToCart(productName);
   }
-
-  handleAddToCart(productTitle: string) {
-    this.cart.push(productTitle);
-    alert(`"${productTitle}" fue agregado al carrito`);
-  }
-
-  getCartCount(): number {
-    return this.cart.length;
-  }
-
-  filterProducts(): void {
-    const lowerSearch = this.searchTerm.toLowerCase();
+  filterProducts() {
+    const term = this.searchTerm.toLowerCase();
     this.filteredProducts = this.products.filter(product =>
-      product.title.toLowerCase().includes(lowerSearch) ||
-      product.name.toLowerCase().includes(lowerSearch)
+      product.title.toLowerCase().includes(term) ||
+      product.name.toLowerCase().includes(term)
     );
+  }  
+
+  viewDetails(id: number): void {
+    this.router.navigate(['/products', id]);
   }
+  getCart(): string[] {
+  return this.cartService.getCart();
+}
 }

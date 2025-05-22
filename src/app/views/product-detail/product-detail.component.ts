@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Product, ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail',
@@ -12,10 +13,15 @@ export class ProductDetailComponent {
 
   product?: Product;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private productService: ProductService
+  ) {}
 
-ngOnInit(): void {
+  ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.product = this.productService.getProductById(id);
+    this.productService.getProductById(id).subscribe((data) => {
+      this.product = data;
+    });
   }
 }

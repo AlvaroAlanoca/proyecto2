@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
 
 export interface Product {
   id:number;
@@ -11,71 +13,23 @@ export interface Product {
   providedIn: 'root'
 })
 export class ProductService {
-private products: Product[] = [
-    {
-      id:1,
-      name: 'Caja con promo',
-      title: 'Cynthia Premiun Box',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/cynthias-garchomp-ex-premium-collection/cynthias-garchomp-ex-premium-collection-169-en.png',
-      description:'esto es una descripcion'
-    },
-    {
-     id:2,
-      name: 'Caja con promo',
-      title: 'Iono Premiun Box',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/ionos-bellibolt-ex-premium-collection/ionos-bellibolt-ex-premium-collection-169-en.png',
-      description:'esto es una descripcion'
-    },
-    {
-     id:3,
-      name: 'Caja con promos',
-      title: 'Team Rocket Premiun Box',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/team-rockets-mewtwo-ex-box/team-rockets-mewtwo-ex-box-169-us.png',
-      description:'esto es una descripcion'
-    },
-    { 
-      id:4,
-      name: 'Cartas jumbo',
-      title: 'Hoenn Collection ',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/hoenn-collection/hoenn-collection-box-169.jpg',
-      description:'esto es una descripcion'
-    },
-    {
-     id : 5,
-      name: 'Caja con 9 sobres',
-      title: 'ETB Team Rocket',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/sv10-pokemon-center-elite-trainer-box/sv10-pokemon-center-elite-trainer-box-169-en.png',
-      description:'esto es una descripcion'
-    },
-    {
-      id:6,
-      name: 'Caja promo y sobres',
-      title: 'Lillie Collection Box',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/lillie-premium-tournament-collection/lillie-premium-tournament-collection-169-en.png',
-      description:'esto es una descripcion'
-    },
-    {
-      id:7,
-      name: 'Caja con 9 sobres',
-      title: 'ETB Journey Together',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/sv09-elite-trainer-box/sv09-elite-trainer-box-169-en.png',
-      description:'esto es una descripcion'
-    },
-    {
-      id:8,
-      name: 'Caja con 9 sobres',
-      title: 'ETB Prismatic Evolutions',
-      image: 'https://www.pokemon.com/static-assets/content-assets/cms2/img/trading-card-game/series/incrementals/2025/sv8pt5-elite-trainer-box/sv8pt5-elite-trainer-box-169-en.png',
-      description:'esto es una descripcion'
-    }
+  private apiUrl ='http://localhost:3000/products';
+  constructor(private http: HttpClient) {}
 
-    
-  ];
-    getProducts(): Product[] {
-    return this.products;
+  getProducts(): Observable<Product[]>{
+    return this.http.get<Product[] >(this.apiUrl);
+      catchError(error => {
+        console.error('Error al obtener productos:', error);
+        return throwError(() => new Error('Error al cargar productos. Por favor, intenta más tarde.'));
+      })
   } 
-  getProductById(id: number): Product | undefined {
-    return this.products.find(p => p.id === id);
+
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>('${this.apiUrl}/${id}');
+      catchError(error => {
+      console.error('Error al obtener detalle del producto:', error);
+      return throwError(() => new Error('No se pudo cargar el detalle del producto.'));
+      })
   } 
 
 }

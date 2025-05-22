@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductService,Product } from './services/product.service';
+import { CartService } from './services/cart.service';
 
 
 @Component({
@@ -11,4 +12,13 @@ import { ProductService,Product } from './services/product.service';
 })
 export class AppComponent {
 
+  constructor(public cartService: CartService) {}
+
+
+  getCartCount(): number {
+    return this.cartService.getCartCount();
+  }
+  getCartItems(): string[] {
+    return this.cartService.getCart();
+  }
 }

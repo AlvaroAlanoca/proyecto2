@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductListComponent } from './views/product-list/product-list.component';
 import { ProductDetailComponent } from './views/product-detail/product-detail.component';
 import { RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { RouterModule } from '@angular/router';
     AppRoutingModule,
     FormsModule,
     RouterModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
